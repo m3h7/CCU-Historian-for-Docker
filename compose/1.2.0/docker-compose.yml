@@ -1,0 +1,16 @@
+version: '3'
+services:
+  ccu-historian:
+    image: tzahari/ccu-historian:1.2.0
+    env_file:
+    - ./.env
+    build:
+      context: ../../1.2.0
+    ports:
+    - '2000:80'
+    - '2011:2011'
+    - '2098:2098'
+    - '2099:2099'
+    volumes:
+    - './volumes/config:/opt/ccu-historian/config:ro'
+    - './volumes/database:/database:rw'

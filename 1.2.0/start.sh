@@ -15,14 +15,14 @@ then
         echo "Config option are missing! CONFIG_CCU_TYPE, CONFIG_CCU_IP & CONFIG_HOST_IP required."
         exit -1
     fi
-    
+
     echo "creating config file"
 
     echo "devices.device1.type=$CONFIG_CCU_TYPE" > $CONFIG
     echo "devices.device1.address='$CONFIG_CCU_IP'" >> $CONFIG
     echo "devices.historianAddress='$CONFIG_HOST_IP'" >> $CONFIG
     echo "webServer.historianAddress='$CONFIG_HOST_IP'" >> $CONFIG
-    
+
     if [ -n "$CONFIG_HOST_BINRPCPORT" ]
     then
         echo "devices.historianBinRpcPort=$CONFIG_HOST_BINRPCPORT" >> $CONFIG
@@ -32,9 +32,17 @@ then
     then
         echo "devices.historianXmlRpcPort=$CONFIG_HOST_XMLRPCPORT" >> $CONFIG
     fi
-    
+
     echo "database.dir='/database'" >> $CONFIG
 
 fi
+
+if [ -z "$TZ" ]
+then
+  TZ=UTC
+fi
+echo "Set timezone to '$TZ'"
+ln -nsf /usr/share/zoneinfo/$TZ /etc/localtime
+echo $TZ > /etc/timezone
 
 java -jar ccu-historian.jar -config $CONFIG
