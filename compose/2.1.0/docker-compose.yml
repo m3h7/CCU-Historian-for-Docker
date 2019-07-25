@@ -1,0 +1,16 @@
+version: '3'
+services:
+  ccu-historian:
+    image: m3h7/ccu-historian:2.1.0
+    restart: always
+    env_file:
+    - ./.env
+    build:
+      context: ../../2.1.0
+    ports:
+    - '2000:80'
+    - '2098:2098'
+    - '2099:2099'
+    volumes:
+    - './volumes/config:/opt/ccu-historian/config:ro'
+    - './volumes/database:/database:rw'
